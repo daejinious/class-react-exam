@@ -1,32 +1,51 @@
-import React, {useEffect, useState} from "react";
-import { BrowserRouter, Route, Link } from 'react-router-dom'
-import Rooms from "./Rooms";
+import React, { useState } from 'react'
 
 function App() {
+  const [todoList, setTodoList] = useState([])
+  const [currentId, setCurrentId] = useState(1)
+  const [desc, setDesc] = useState('')
+  const [showOdd, setShowOdd] = useState(false)
+
+  const onAdd = () => {
+    const todo = { id: currentId, desc }
+    setCurrentId(currentId + 1)
+    setTodoList([...todoList, todo])
+    setDesc('')
+  }
+
+  const onDelete = (e) => {
+    const id = Number(e.target.dataset.id)
+    const newTodoList = todoList.filter((todo) => todo.id !== id)
+    setTodoList(newTodoList)
+  }
+
+  const onSaveToServer = () => {}
+
   return (
-    <BrowserRouter>
-      <div style={{ padding: 20, border: '5px solid gray' }}>
-        <Link to="/">홈</Link><br />
-        <Link to="/photo">사진</Link><br/>
-        <Link to="/rooms">방 소개</Link><br/>
-
-        <Route exact path="/" component={Home} />
-        <Route path="/photo" component={Photo} />
-        <Route path="/rooms" component={Rooms} />
-      </div>
-
-
-    </BrowserRouter>
+    <div>
+      <h3>할 일 목록</h3>
+      <ul>
+        {todoList
+          .filter((_, index) => (showOdd ? index % 2 === 0 : true))
+          .map((todo) => (
+            <li key={todo.id}>
+              <span>{todo.desc}</span>
+              <button data-id={todo.id} onClick={onDelete}>
+                삭제
+              </button>
+            </li>
+          ))}
+      </ul>
+      <input
+        type="text"
+        value={desc}
+        onChange={(e) => setDesc(e.target.value)}
+      />
+      <button onClick={onAdd}>추가</button>
+      <button onClick={() => setShowOdd(!showOdd)}>홀수</button>
+      <button onClick={onSaveToServer}>서버에 저장</button>
+    </div>
   )
-
 }
 
-function Home() {
-  return <h2>여기는 홈페이지 입니다.</h2>
-}
-
-function Photo() {
-  return <h2>여기는 Photo 입니다.</h2>
-}
-
-export default App;
+export default App
