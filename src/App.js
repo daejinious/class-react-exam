@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from "react";
 
 function App() {
+  const [pageName, setPageName] = useState('')
+
+
+  useEffect(() => {
+    window.onpopstate = (event) => {
+      console.log(`location: ${document.location}, state: ${event.state}`);
+      const { state } = event
+
+      setPageName(state)
+    }
+  }, []);
+
+  const onClick1 = () => {
+    const pageName = 'page1'
+    window.history.pushState(pageName, '', '/page1')
+    setPageName(pageName)
+  }
+
+  const onClick2 = () => {
+    const pageName = 'page2'
+    window.history.pushState(pageName, '', '/page2')
+    setPageName(pageName)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={onClick1}>
+        page1
+      </button>
+      <button onClick={onClick2}>
+        page2
+      </button>
+
+      {!pageName && <Home />}
+      {pageName === 'page1' && <Page1 />}
+      {pageName === 'page2' && <Page2 />}
     </div>
   );
+}
+
+function Home() {
+  return <h2>여기는 홈페이지 입니다.</h2>
+}
+
+function Page1() {
+  return <h2>여기는 page 1 입니다.</h2>
+}
+
+function Page2() {
+  return <h2>여기는 page 2 입니다.</h2>
 }
 
 export default App;
