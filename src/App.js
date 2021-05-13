@@ -5,6 +5,7 @@ function App() {
   const [color, setColor] = useState('red')
   const [title, setTitle] = useState('red')
   const [state, setState] = useState(false)
+  const [count, setCount] = useState(0)
 
   const setColorClick = () => {
     let currentColor = 'red'
@@ -16,10 +17,17 @@ function App() {
     setTitle(currentColor)
   }
 
+  const onClick = () => {
+    setCount(count + 1)
+  }
+
   return (
-    <button style={{ backgroundColor: color }} onClick={setColorClick}>
-      <Title title={title} />
-    </button>
+    <div>
+      <button style={{ backgroundColor: color }} onClick={setColorClick}>
+        <Title title={title} />
+      </button>
+      <button onClick={onClick}>클릭</button>
+    </div>
   )
 }
 
