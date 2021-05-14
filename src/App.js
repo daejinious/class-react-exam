@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import Counter from './Counter'
+import React, { useState } from 'react'
 
 function App() {
-  const [seconds, setSeconds] = useState(0)
-  useEffect(() => {
-    setTimeout(() => {
-      setSeconds((v) => v + 1)
-    }, 1000)
-  })
+  const [count, setCount] = useState(0)
+  const onClick = () => {
+    setCount(count + 1)
+    setCount(count + 1)
+  }
+  /*
+    useState => 비동기이며 배치로 동작하기 때문에
+    위 동작은 처리 되지 않는다.
+    이를 가능하게 하려면 아래와 같이 작성한다.
+   */
+
+  const funcClick = () => {
+    setCount((v) => v + 1)
+    setCount((v) => v + 1)
+  }
+
+  console.log('render called')
 
   return (
     <div>
-      {seconds % 2 === 0 && <Counter />}
-      <h1 style={{ color: seconds % 2 ? 'red' : 'blue' }}>안녕하세요</h1>
-      <h2>지금까지 {seconds}초가 지났습니다.</h2>
+      <h2>{count}</h2>
+      <button onClick={onClick}>증가</button>
+      <button onClick={funcClick}>증가</button>
     </div>
   )
 }
