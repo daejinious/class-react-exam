@@ -1,32 +1,19 @@
-import React, { useState } from 'react'
-import Title from './Title'
+import React, { useEffect, useState } from 'react'
+import Counter from './Counter'
 
 function App() {
-  const [color, setColor] = useState('red')
-  const [title, setTitle] = useState('red')
-  const [state, setState] = useState(false)
-  const [count, setCount] = useState(0)
-
-  const setColorClick = () => {
-    let currentColor = 'red'
-    if (!state) {
-      currentColor = 'blue'
-    }
-    setState(!state)
-    setColor(currentColor)
-    setTitle(currentColor)
-  }
-
-  const onClick = () => {
-    setCount(count + 1)
-  }
+  const [seconds, setSeconds] = useState(0)
+  useEffect(() => {
+    setTimeout(() => {
+      setSeconds((v) => v + 1)
+    }, 1000)
+  })
 
   return (
     <div>
-      <button style={{ backgroundColor: color }} onClick={setColorClick}>
-        <Title title={title} />
-      </button>
-      <button onClick={onClick}>클릭</button>
+      {seconds % 2 === 0 && <Counter />}
+      <h1 style={{ color: seconds % 2 ? 'red' : 'blue' }}>안녕하세요</h1>
+      <h2>지금까지 {seconds}초가 지났습니다.</h2>
     </div>
   )
 }
