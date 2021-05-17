@@ -1,6 +1,6 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react'
 
-const UserContext = createContext('unknown');
+const UserContext = createContext('unknown')
 
 export default function App() {
   return (
@@ -9,7 +9,7 @@ export default function App() {
         <Profile />
       </UserContext.Provider>
     </div>
-  );
+  )
 }
 
 function Profile() {
@@ -17,10 +17,10 @@ function Profile() {
     <div>
       <Greeting />
     </div>
-  );
+  )
 }
 
 function Greeting() {
-  const username = useContext(UserContext);
-  return <p>{`${username}님 안녕하세요`}</p>;
+  const username = useContext(UserContext)
+  return <p>{`${username}님 안녕하세요`}</p>
 }
