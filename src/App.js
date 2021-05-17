@@ -1,13 +1,26 @@
-import React, { useState } from 'react'
-import Profile from './Profile'
+import React, { createContext, useContext } from 'react';
+
+const UserContext = createContext('unknown');
 
 export default function App() {
-  const [userId, setUserId] = useState(0)
-
   return (
-    <>
-      <Profile userId={userId} />
-      <button onClick={() => setUserId(userId + 1)}>userId 변경</button>
-    </>
-  )
+    <div>
+      <UserContext.Provider value="jane">
+        <Profile />
+      </UserContext.Provider>
+    </div>
+  );
+}
+
+function Profile() {
+  return (
+    <div>
+      <Greeting />
+    </div>
+  );
+}
+
+function Greeting() {
+  const username = useContext(UserContext);
+  return <p>{`${username}님 안녕하세요`}</p>;
 }
