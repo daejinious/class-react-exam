@@ -1,44 +1,24 @@
 import React from 'react'
-import produce from 'immer'
+import {
+  addTimeline,
+  removeTimeline,
+  editTimeline,
+  increaseNextPage,
+} from './timeline/state'
+import { addFriend, removeFriend, editFriend } from './friend/state'
+import store from './common/store'
 
-const prevState = {
-  user: {
-    name: 'mike',
-    friends: [
-      {
-        name: 'jane',
-        age: 23,
-      },
-      {
-        name: 'jake',
-        age: 24,
-      },
-    ],
-  },
-  products: [],
-}
+store.dispatch(addTimeline({ id: 1, desc: '코딩은 절거워' }))
+store.dispatch(addTimeline({ id: 2, desc: 'Redux 좋아' }))
+store.dispatch(increaseNextPage())
+store.dispatch(editTimeline({ id: 2, desc: 'redux 너무 좋아' }))
+store.dispatch(removeTimeline({ id: 1, desc: '코딩은 절거워' }))
 
-const nextState = produce(prevState, (draft) => {
-  draft.user.friends[0].age = 33
-})
-console.log('prevState === nextState', prevState === nextState)
-console.log(
-  'prevState.user.friends[0] === nextState.user.friends[0]',
-  prevState.user.friends[0] === nextState.user.friends[0]
-)
+store.dispatch(addFriend({ id: 1, name: '김대진' }))
+store.dispatch(addFriend({ id: 2, name: '호랑이' }))
+store.dispatch(editFriend({ id: 1, name: '꾸꾸까까' }))
+store.dispatch(removeFriend({ id: 1, name: '꾸꾸까까' }))
 
-console.log(
-  'prevState.user.friends[1] === nextState.user.friends[1]',
-  prevState.user.friends[1] === nextState.user.friends[1]
-)
-
-console.log(
-  'prevState.products === nextState.products',
-  prevState.products === nextState.products
-)
-
-function App() {
+export default function App() {
   return <div>실전 리액트</div>
 }
-
-export default App
