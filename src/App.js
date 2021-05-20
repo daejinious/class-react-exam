@@ -1,41 +1,59 @@
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useContext, useReducer } from 'react'
+
+const AppContext = createContext({})
+const DispatchContext = createContext(() => {})
 
 export default function App() {
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
   return (
     <div>
-      실적 리액트
-      <SelectFruit />
+      <AppContext.Provider value={state}>
+        <DispatchContext.Provider value={dispatch}>
+          <User />
+          <Product />
+        </DispatchContext.Provider>
+      </AppContext.Provider>
     </div>
   )
 }
 
-function SelectFruit() {
-  const [fruits, setFruits] = useState(['apple', 'banana', 'orange'])
-  const [newFruit, setNewFruit] = useState([''])
+const INITIAL_STATE = {
+  user: { name: 'mike' },
+  product: { name: 'phone' },
+}
 
-  function addNewFruit() {
-    // fruits.push(newFruit)
-    setFruits([...fruits, newFruit])
-    setNewFruit('')
+function reducer(state, action) {
+  switch (action.type) {
+    case 'setUserName':
+      return {
+        ...state,
+        user: { ...state.user, name: action.name },
+      }
+    // default:
+    //   return {
+    //     ...state,
+    //     user: { ...state.user, name: '' },
+    //   }
   }
+}
+
+function User() {
+  console.log('User render')
+  const { user } = useContext(AppContext)
+  const dispatch = useContext(DispatchContext)
 
   return (
     <div>
-      <Select options={fruits} />
-      <input
-        type="text"
-        value={newFruit}
-        onChange={(e) => setNewFruit(e.target.value)}
-      />
-      <button onClick={addNewFruit}>추가하기</button>
+      <p>{`${user.name}님 안녕하세요`}</p>
+      <button onClick={() => dispatch({ type: 'setUserName', name: 'john' })}>
+        사용자 이름 수정
+      </button>
     </div>
   )
 }
 
-const Select = React.memo(({ options }) => (
-  <div>
-    {options.map((item, index) => (
-      <p key={index}>{item}</p>
-    ))}
-  </div>
-))
+function Product() {
+  console.log('Product render')
+  const { product } = useContext(AppContext)
+  return <p>{`제품 이름: ${product.name}`}</p>
+}
