@@ -1,11 +1,16 @@
 import React from 'react'
 import { applyMiddleware, createStore } from 'redux'
 
-const printLog = (store) => (next) => (action) => {
-  console.log(`prev state = ${JSON.stringify(store.getState())}`)
-  const result = next(action)
-  console.log(`next state = ${JSON.stringify(store.getState())}`)
-  return result
+const delayAction = (store) => (next) => (action) => {
+  const delay = action.meta?.delay // action.meta && action.meta.delay
+  if (!delay) {
+    return next(action)
+  }
+
+  const timeoutId = setTimeout(() => next(action), delay)
+  return function cancel() {
+    clearTimeout(timeoutId)
+  }
 }
 
 const myReducer = (state = { name: 'mike' }, action) => {
@@ -16,8 +21,8 @@ const myReducer = (state = { name: 'mike' }, action) => {
   return state
 }
 
-const store = createStore(myReducer, applyMiddleware(printLog))
-store.dispatch({ type: 'someAction' })
+const store = createStore(myReducer, applyMiddleware(delayAction))
+store.dispatch({ type: 'someAction', meta: { delay: 3000 } })
 
 export default function App() {
   return <div>실전 리액트</div>
