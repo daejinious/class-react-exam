@@ -1,26 +1,23 @@
-import React, { createContext, useContext } from 'react'
-
-const UserContext = createContext('unknown')
+import React, { useEffect, useState } from 'react'
 
 export default function App() {
   return (
     <div>
-      <UserContext.Provider value="jane">
-        <Profile />
-      </UserContext.Provider>
+      실적 리액트
+      <Profile />
     </div>
   )
 }
 
-function Profile() {
-  return (
-    <div>
-      <Greeting />
-    </div>
-  )
+function Profile({ userId }) {
+  const [user, setUser] = useState()
+  const [needDetail, setNeedDetail] = useState(false)
+
+  useEffect(() => {
+    fetchUser(userId, needDetail).then((data) => setUser(data))
+  }, [userId, needDetail])
+  console.log(user, setNeedDetail)
+  return null
 }
 
-function Greeting() {
-  const username = useContext(UserContext)
-  return <p>{`${username}님 안녕하세요`}</p>
-}
+function fetchUser(userId, needDetail) {}
