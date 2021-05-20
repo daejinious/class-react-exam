@@ -12,7 +12,13 @@ function TimelineMain() {
      읽어들이고 있기 때문에 불필요한 rendering 발생
 
       */
-    const unsubscribe = store.subscribe(() => forceUpdate())
+    let prevTimelines = store.getState().timeline.timelines
+    const unsubscribe = store.subscribe(() => {
+      const timelines = store.getState().timeline.timelines
+      if (prevTimelines !== timelines) {
+        forceUpdate()
+      }
+    })
     return () => unsubscribe()
   }, [])
 
