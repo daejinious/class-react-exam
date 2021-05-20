@@ -1,26 +1,22 @@
 import React from 'react'
 import { applyMiddleware, createStore } from 'redux'
 
-const middleware1 = (store) => (next) => (action) => {
-  console.log('middleware1 start')
+const printLog = (store) => (next) => (action) => {
+  console.log(`prev state = ${JSON.stringify(store.getState())}`)
   const result = next(action)
-  console.log('middleware1 end')
+  console.log(`next state = ${JSON.stringify(store.getState())}`)
   return result
 }
 
-const middleware2 = (store) => (next) => (action) => {
-  console.log('middleware2 start')
-  const result = next(action)
-  console.log('middleware2 end')
-  return result
-}
-
-const myReducer = (state, action) => {
+const myReducer = (state = { name: 'mike' }, action) => {
   console.log('myReducer')
+  if (action.type === 'someAction') {
+    return { name: 'mike2' }
+  }
   return state
 }
 
-const store = createStore(myReducer, applyMiddleware(middleware1, middleware2))
+const store = createStore(myReducer, applyMiddleware(printLog))
 store.dispatch({ type: 'someAction' })
 
 export default function App() {
