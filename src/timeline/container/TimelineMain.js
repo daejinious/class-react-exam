@@ -7,6 +7,11 @@ import TimelineList from '../component/TimelineList'
 function TimelineMain() {
   const [, forceUpdate] = useReducer((v) => v + 1, 0)
   useEffect(() => {
+    /**
+      store subscribe 동작 시 강제로 다른 store 값까지
+     읽어들이고 있기 때문에 불필요한 rendering 발생
+
+      */
     const unsubscribe = store.subscribe(() => forceUpdate())
     return () => unsubscribe()
   }, [])
