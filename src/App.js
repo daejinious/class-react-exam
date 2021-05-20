@@ -13,12 +13,12 @@ export default function App() {
   )
 }
 
-const INITAL_STATE = {
+const INITIAL_STATE = {
   user: { name: 'mike' },
   product: { name: 'iphone' },
 }
 
-function reducer(state = INITAL_STATE, action) {
+function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case 'setUserName':
       return {
