@@ -13,6 +13,7 @@ function FriendMain(props) {
 
       if (prevFriends !== friends) {
         forceUpdate()
+        prevFriends = friends
       }
     })
     return () => unsubscribe()

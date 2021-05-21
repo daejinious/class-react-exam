@@ -17,6 +17,7 @@ function TimelineMain() {
       const timelines = store.getState().timeline.timelines
       if (prevTimelines !== timelines) {
         forceUpdate()
+        prevTimelines = timelines
       }
     })
     return () => unsubscribe()
