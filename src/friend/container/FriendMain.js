@@ -5,20 +5,24 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import NumberSelect from '../component/NumberSelect'
 import FriendList from '../component/FriendList'
 import { MAX_AGE_LIMIT, MAX_SHOW_LIMIT } from '../common'
+import {
+  getAgeLimit,
+  getShowLimit,
+  getFriendsWithAgeLimit,
+  getFriendsWithAgeShowLimit,
+} from '../state/selector'
 
-function FriendMain() {
+export default function FriendMain() {
   const [ageLimit, showLimit, friendsWithAgeLimit, friendsWithAgeShowLimit] =
-    useSelector((state) => {
-      const { ageLimit, showLimit, friends } = state.friend
-      const friendsWithAgeLimit = friends.filter((item) => item.age <= ageLimit)
-
-      return [
-        ageLimit,
-        showLimit,
-        friendsWithAgeLimit,
-        friendsWithAgeLimit.slice(0, showLimit),
-      ]
-    }, shallowEqual)
+    useSelector(
+      (state) => [
+        getAgeLimit(state),
+        getShowLimit(state),
+        getFriendsWithAgeLimit(state),
+        getFriendsWithAgeShowLimit(state),
+      ],
+      shallowEqual
+    )
   const dispatch = useDispatch()
 
   function onAdd() {
@@ -46,8 +50,6 @@ function FriendMain() {
     </div>
   )
 }
-
-export default FriendMain
 
 // filter option
 const AGE_LIMIT_OPTIONS = [15, 20, 25, MAX_AGE_LIMIT]
